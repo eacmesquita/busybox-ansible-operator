@@ -1,0 +1,23 @@
+---
+- name: start busybox
+  k8s:
+    definition:
+      kind: Deployment
+      apiVersion: apps/v1
+      metadata:
+        name: '{{ meta.name }}-busybox'
+        namespace: '{{ meta.namespace }}'
+      spec:
+        replicas: "{{size}}"
+        selector:
+          matchLabels:
+            app: busybox
+        template:
+          metadata:
+            labels:
+              app: busybox
+          spec:
+            containers:
+            - name: busybox
+              image: busybox:1.28
+              command: ['sh', '-c', 'echo The app is running! && sleep 3600']
